@@ -5,6 +5,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
         <style>
+
             body {
                 color: #61443e;
                 font-family:Monospace;
@@ -184,6 +185,116 @@
 						return false;
 					}
 				}
+
+				function createThree(pos, quat, w, l, h){
+
+					const three = new THREE.Group();
+
+					const handle = new THREE.BoxGeometry(1.5, 10, 1.5,1,1,1);
+					const meshHandle = new THREE.Mesh(handle,   new THREE.MeshLambertMaterial({color:0x783f04}));
+
+					three.add(meshHandle)
+
+					const top = new THREE.SphereGeometry(4,60);
+					const meshTop = new THREE.Mesh(top,   new THREE.MeshLambertMaterial({color:0x6aa84f}));
+					meshTop.position.y = 5;
+
+					three.add(meshTop)
+
+
+					three.position.copy(pos);
+
+					scene.add(three);
+					return three;
+
+				
+
+				}
+
+				function createFence(pos,quat,w,l,h,rotationVariable){
+
+					const fence = new THREE.Group();
+
+					const right = new THREE.BoxGeometry(1, 3, 1,1,1,1);
+					const rightHandle = new THREE.Mesh(right,   new THREE.MeshLambertMaterial({color:0x783f04}));
+
+					fence.add(rightHandle)
+
+					const left = new THREE.BoxGeometry(1, 3, 1,1,1,1);
+					const leftHandle = new THREE.Mesh(left,   new THREE.MeshLambertMaterial({color:0x783f04}));
+
+					leftHandle.position.x = 5;
+					fence.add(leftHandle)
+					
+					const bar = new THREE.BoxGeometry(5, 0.4, 1,1,1,1)
+					const barHandle = new THREE.Mesh(bar,   new THREE.MeshLambertMaterial({color:0x783f04}));
+
+					barHandle.position.x = 2.5;
+					barHandle.position.y = 1.1;
+
+					fence.add(barHandle)
+
+
+					const bar2 = new THREE.BoxGeometry(5, 0.4, 1,1,1,1)
+					const barHandle2 = new THREE.Mesh(bar2,   new THREE.MeshLambertMaterial({color:0x783f04}));
+
+					barHandle2.position.x = 2.5;
+					barHandle2.position.y = 0.2;
+
+					fence.add(barHandle2)
+
+					fence.position.y = 5;
+
+					fence.position.copy(pos);
+						
+					fence.rotation.y = rotationVariable
+
+
+					scene.add(fence)
+
+
+					
+
+					return fence;
+					
+
+				}
+
+				function createText(post,quat,w,l,h){
+
+				const loader = new THREE.FontLoader();
+
+				loader.load('./src/styles/Open Sans_Regular.json', function (font){
+					const geometry = new THREE.TextGeometry('EASYSCOOTER',{
+						font:font,
+						size:5,
+						height:10,
+						curveSegments: 5,
+						bevelEnabled: true,
+						bevelThickness: 1,
+						bevelSize: 1,
+						bevelOffset: 1,
+						bevelSegments: 5
+					})
+
+					const textMesh = new THREE.Mesh(geometry, [
+						new THREE.MeshPhongMaterial({color: 0xFFFFFF}),
+						// new THREE.MeshPhongMaterial( { color:0x5c2301})
+					])
+
+					textMesh.castShadow = true;
+					textMesh.position.y = 30;
+					textMesh.position.x = 20;
+					textMesh.position.z = 150;
+
+					textMesh.rotation.y = 3.128;
+
+					scene.add(textMesh)
+
+
+				})
+
+				}
 	
 				function createBox(pos, quat, w, l, h, mass, friction, colorVariable) {
 					var material = mass > 0 ? materialDynamic : materialStatic;
@@ -237,8 +348,8 @@
 				function createWheelMesh(radius, width) {
 					var t = new THREE.CylinderGeometry(radius, radius, width, 24, 1);
 					t.rotateZ(Math.PI / 2);
-					var mesh = new THREE.Mesh(t, materialInteractive);
-					mesh.add(new THREE.Mesh(new THREE.BoxGeometry(width * 1.5, radius * 1.75, radius*.25, 1, 1, 1), materialInteractive));
+					var mesh = new THREE.Mesh(t, new THREE.MeshLambertMaterial({color:0x444444}));
+					mesh.add(new THREE.Mesh(new THREE.BoxGeometry(width * 1.5, radius * 1.75, radius*.25, 1, 1, 1), new THREE.MeshLambertMaterial({color:0x000000})));
 					scene.add(mesh);
 					return mesh;
 				}
@@ -282,11 +393,11 @@
 					var wheelAxisPositionBack = -1;
 					var wheelRadiusBack = .4;
 					var wheelWidthBack = .3;
-					var wheelHalfTrackBack = 1;
+					var wheelHalfTrackBack = 0.5;
 					var wheelAxisHeightBack = .3;
 	
 					var wheelAxisFrontPosition = 1.7;
-					var wheelHalfTrackFront = 1;
+					var wheelHalfTrackFront = 0;
 					var wheelAxisHeightFront = .3;
 					var wheelRadiusFront = .35;
 					var wheelWidthFront = .2;
@@ -437,15 +548,55 @@
 	
 				function createObjects() {
 	
-					createBox(new THREE.Vector3(0, -0.5, 0), ZERO_QUATERNION, 75, 1, 75, 0, 2, 0x808080);
+					createBox(new THREE.Vector3(0, -0.5, 0), ZERO_QUATERNION, 400, 1, 400, 0, 2, 0x808080);
 	
 					// var quaternion = new THREE.Quaternion(0, 0, 0, 1);
 					// quaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 18);
 					// createBox(new THREE.Vector3(0, -1.5, 0), quaternion, 8, 4, 10, 0);
 
-					createBox(new THREE.Vector3(0, -1.5, 0), ZERO_QUATERNION, 10, 4, 100, 0, 2, 0x000000 );
+					// There is a road
+					createBox(new THREE.Vector3(0, -1.5, 55), ZERO_QUATERNION, 400, 4, 20, 0, 2, 0x000000 );
+
+					// Pointiller de la route
+					for(let j = 0; j < 30; j++){
+						var quaternion = new THREE.Quaternion(0, 0, 0, 1);
+						createBox(new THREE.Vector3(10+j*5, -1.35, 55), quaternion, 2, 3.9, 1, 0);
+
+						var quaternion = new THREE.Quaternion(0, 0, 0, 1);
+						createBox(new THREE.Vector3(-20+-j*5, -1.35, 55), quaternion, 2, 3.9, 1, 0);
+					}
 
 
+
+					createBox(new THREE.Vector3(-5, -1.5, 0), ZERO_QUATERNION, 20, 4, 100, 0, 2, 0x000000 );
+
+					for(let j = 0; j < 9; j++){
+						var quaternion = new THREE.Quaternion(0, 0, 0, 1);
+						createBox(new THREE.Vector3(-5, -1.35, j*5), quaternion, 1, 3.9, 2, 0);
+
+						var quaternion = new THREE.Quaternion(0, 0, 0, 1);
+						createBox(new THREE.Vector3(-5, -1.35, -j*5), quaternion, 1, 3.9, 2, 0);
+					}
+					
+
+					createBox(new THREE.Vector3(32, 0, -5), ZERO_QUATERNION, 15, 70, 15, 0, 2, 0x808080 )
+					createBox(new THREE.Vector3(20, 0, 10), ZERO_QUATERNION, 15, 100, 15, 0, 2, 0x808080 )
+					createBox(new THREE.Vector3(-5, 44, 10), ZERO_QUATERNION, 60, 12, 15, 0, 2, 0x808080 )
+					createBox(new THREE.Vector3(-30, 0, 10), ZERO_QUATERNION, 15, 100, 15, 0, 2, 0x808080 )
+
+
+
+					createBox(new THREE.Vector3(30, 20, 20), ZERO_QUATERNION, 15, 140, 15, 0, 2, 0x808080 )
+
+
+
+					createBox(new THREE.Vector3(40, 0, 10), ZERO_QUATERNION, 72, 2, 72, 0, 2, 0x1D1D1D )
+					createBox(new THREE.Vector3(0, 0, 165), ZERO_QUATERNION, 400, 2, 200, 0, 2, 0x1D1D1D )
+
+					createThree(new THREE.Vector3(8, 6, 10));
+
+					createText();
+					
 
 	
 					// var size = .75;
@@ -455,7 +606,8 @@
 					// 	for (var i = 0; i < nh; i++)
 					// 		createBox(new THREE.Vector3(size * j - (size * (nw - 1)) / 2, size * i, 10), ZERO_QUATERNION, size, size, size, 10);
 	
-					createVehicle(new THREE.Vector3(0, 4, -20), ZERO_QUATERNION );
+					createVehicle(new THREE.Vector3(0, 10, -20), ZERO_QUATERNION );
+					createFence(new THREE.Vector3(10, 3, 42), ZERO_QUATERNION, 400, 2, 200, 90);
 				}
 	
 				// - Init -
