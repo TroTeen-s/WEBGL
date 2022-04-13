@@ -560,6 +560,10 @@
 
 				// There is a road
 				createBox(new THREE.Vector3(0, -1.5, 55), ZERO_QUATERNION, 400, 4, 20, 0, 2, 0x000000);
+				createBox(new THREE.Vector3(100, -1.5, 55), ZERO_QUATERNION, 20, 4, 450, 0, 2, 0x000000);
+				createBox(new THREE.Vector3(190, -1.5, -35), ZERO_QUATERNION, 20, 4, 200, 0, 2, 0x000000);
+
+				
 
 				// Pointiller de la route
 				for (let j = 0; j < 30; j++) {
@@ -591,9 +595,9 @@
 				createBox(new THREE.Vector3(-55, 0, 75), ZERO_QUATERNION, 15, 70, 15, 0, 2, 0x1D1D1D)
 
 				// Arche
-				createBox(new THREE.Vector3(25, 0, 23), ZERO_QUATERNION, 15, 100, 15, 0, 2, 0xe2a646)
-				createBox(new THREE.Vector3(-5, 44, 23), ZERO_QUATERNION, 60, 12, 15, 0, 2, 0xe2a646)
-				createBox(new THREE.Vector3(-35, 0, 23), ZERO_QUATERNION, 15, 100, 15, 0, 2, 0xe2a646)
+				createBox(new THREE.Vector3(25, 0, 23), ZERO_QUATERNION, 15, 100, 15, 0, 2, 0xFF9900)
+				createBox(new THREE.Vector3(-5, 44, 23), ZERO_QUATERNION, 60, 12, 15, 0, 2, 0xFF9900)
+				createBox(new THREE.Vector3(-35, 0, 23), ZERO_QUATERNION, 15, 100, 15, 0, 2, 0xFF9900)
 
 
 				//Gros immeuble
@@ -607,34 +611,34 @@
 				// Arbres
 				createThree(new THREE.Vector3(8, 5, 0));
 				createThree(new THREE.Vector3(-18, 5, 0));
-				createThree(new THREE.Vector3(8, 5, 10));
+				// createThree(new THREE.Vector3(8, 5, 10));
 				createThree(new THREE.Vector3(-18, 5, 10));
 				createThree(new THREE.Vector3(8, 5, 20));
-				createThree(new THREE.Vector3(-18, 5, 20));
+				// createThree(new THREE.Vector3(-18, 5, 20));
 				createThree(new THREE.Vector3(8, 5, 30));
 				createThree(new THREE.Vector3(-18, 5, 30));
-				createThree(new THREE.Vector3(8, 5, 40));
+				// createThree(new THREE.Vector3(8, 5, 40));
 				createThree(new THREE.Vector3(-18, 5, 40));
 				createThree(new THREE.Vector3(18, 5, 40));
 				createThree(new THREE.Vector3(-28, 5, 40));
 
 
 				// Barriere
-				createFence(new THREE.Vector3(6, 1, 2.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
-				createFence(new THREE.Vector3(-16, 1, 2.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
-				createFence(new THREE.Vector3(6, 1, 12.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
-				createFence(new THREE.Vector3(-16, 1, 12.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
-				createFence(new THREE.Vector3(6, 1, 22.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
-				createFence(new THREE.Vector3(-16, 1, 22.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
-				createFence(new THREE.Vector3(6, 1, 32.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
-				createFence(new THREE.Vector3(-16, 1, 32.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
-				createFence(new THREE.Vector3(6, 1, 42.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
-				createFence(new THREE.Vector3(-16, 1, 42.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
+				createFence(new THREE.Vector3(6, 2, 2.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
+				createFence(new THREE.Vector3(-16, 2, 2.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
+				// createFence(new THREE.Vector3(6, 2, 12.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
+				createFence(new THREE.Vector3(-16, 2, 12.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
+				createFence(new THREE.Vector3(6, 2, 22.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
+				createFence(new THREE.Vector3(-16, 2, 22.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
+				createFence(new THREE.Vector3(6, 2, 32.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
+				// createFence(new THREE.Vector3(-16, 2, 32.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
+				createFence(new THREE.Vector3(6, 2, 42.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
+				createFence(new THREE.Vector3(-16, 2, 42.5), ZERO_QUATERNION, 400, 2, 200, Math.PI / 2);
 
-				createFence(new THREE.Vector3(8, 1, 42.5), ZERO_QUATERNION, 400, 2, 200, 0);
-				createFence(new THREE.Vector3(-18, 1, 42.5), ZERO_QUATERNION, 400, 2, 200, Math.PI);
-				createFence(new THREE.Vector3(16, 1, 42.5), ZERO_QUATERNION, 400, 2, 200, 0);
-				createFence(new THREE.Vector3(-26, 1, 42.5), ZERO_QUATERNION, 400, 2, 200, Math.PI);
+				createFence(new THREE.Vector3(8, 2, 42.5), ZERO_QUATERNION, 400, 2, 200, 0);
+				createFence(new THREE.Vector3(-18, 2, 42.5), ZERO_QUATERNION, 400, 2, 200, Math.PI);
+				createFence(new THREE.Vector3(16, 2, 42.5), ZERO_QUATERNION, 400, 2, 200, 0);
+				createFence(new THREE.Vector3(-26, 2, 42.5), ZERO_QUATERNION, 400, 2, 200, Math.PI);
 
 				//Texte
 				createText();
