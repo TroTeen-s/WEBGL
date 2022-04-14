@@ -294,6 +294,23 @@
 
 			}
 
+			function createCylinder(pos, quat, w, l, h,colorVariable){
+
+				const Cylinder = new THREE.Group();
+
+				const geometry = new THREE.CylinderGeometry( w, l, h, 32 );
+				const material = new THREE.MeshBasicMaterial( {color: colorVariable} );
+				const CylinderMesh = new THREE.Mesh( geometry, material );
+
+				Cylinder.add(CylinderMesh);
+				
+				Cylinder.position.copy(pos);
+				scene.add( Cylinder );
+
+				
+			
+			}
+
 			function createText(post, quat, w, l, h) {
 
 				const loader = new THREE.FontLoader();
@@ -593,11 +610,13 @@
 				createBox(new THREE.Vector3(0, -1.5, 55), ZERO_QUATERNION, 800, 4, 20, 0, 2, 0x000000);
 				createBox(new THREE.Vector3(100, -1.5, 55), ZERO_QUATERNION, 20, 4, 800, 0, 2, 0x000000);
 				createBox(new THREE.Vector3(350, -1.5, -0), ZERO_QUATERNION, 20, 4, 750, 0, 2, 0x000000);
-				createBox(new THREE.Vector3(-5, -1.5, 0), ZERO_QUATERNION, 20, 4, 100, 0, 2, 0x000000);
+				createBox(new THREE.Vector3(-5, -1.5, 0), ZERO_QUATERNION, 20, 4, 750, 0, 2, 0x000000);
 				createBox(new THREE.Vector3(0, -1.5, -300), ZERO_QUATERNION, 900, 4, 20, 0, 2, 0x000000);
 				createBox(new THREE.Vector3(0, -1.5, 300), ZERO_QUATERNION, 900, 4, 20, 0, 2, 0x000000);
 				createBox(new THREE.Vector3(-350, -1.5, -0), ZERO_QUATERNION, 20, 4, 750, 0, 2, 0x000000);
 
+
+				// createCylinder(new THREE.Vector3(-5, -9, 150), ZERO_QUATERNION, 20, 20, 20,0xaab0b7)
 
 
 
@@ -610,29 +629,46 @@
 					if(j<17 || j>20){
 						if(j<66 || j>70){
 							createBox(new THREE.Vector3(10 + j * 5, -1.35, 55), quaternion, 2, 3.9, 1, 0);
+							createBox(new THREE.Vector3(10 + j * 5, -1.35, -300), quaternion, 2, 3.9, 1, 0);
+
+							createBox(new THREE.Vector3(10 + j * 5, -1.35, 300), quaternion, 2, 3.9, 1, 0);
+							
+							
 						}
 					}
 
 					if(j<64){
 						createBox(new THREE.Vector3(-20 + -j * 5, -1.35, 55), quaternion, 2, 3.9, 1, 0);
+						createBox(new THREE.Vector3(-20 + -j * 5, -1.35, -300), quaternion, 2, 3.9, 1, 0);
+
+						createBox(new THREE.Vector3(-20 + -j * 5, -1.35, 300), quaternion, 2, 3.9, 1, 0);
+
 					}
 				}
 
 				for(let v = 0; v < 58; v++){
 					if(v<9 || v>13){
-						createBox(new THREE.Vector3(-350, -1.35, v*5), quaternion, 2, 3.9, 1, 0);
+						createBox(new THREE.Vector3(-350, -1.35, v*5), quaternion, 1, 3.9, 2, 0);
+						createBox(new THREE.Vector3(350, -1.35, v*5), quaternion, 1, 3.9, 2, 0);
+						createBox(new THREE.Vector3(100, -1.35,v*5), quaternion, 1, 3.9, 2, 0);
+						createBox(new THREE.Vector3(-4, -1.35,v*5), quaternion, 1, 3.9, 2, 0);
 					}
-					createBox(new THREE.Vector3(-350, -1.35,-v*5), quaternion, 2, 3.9, 1, 0);
+
+
+					createBox(new THREE.Vector3(-350, -1.35,-v*5), quaternion, 1, 3.9, 2, 0);
+					createBox(new THREE.Vector3(350, -1.35,-v*5), quaternion, 1, 3.9, 2, 0);
+					createBox(new THREE.Vector3(100, -1.35,-v*5), quaternion, 1, 3.9, 2, 0);
+					createBox(new THREE.Vector3(-4, -1.35,-v*5), quaternion, 1, 3.9, 2, 0);
 				}
 				
 
-				for (let j = 0; j < 9; j++) {
-					var quaternion = new THREE.Quaternion(0, 0, 0, 1);
-					createBox(new THREE.Vector3(-5, -1.35, j * 5), quaternion, 1, 3.9, 2, 0);
+				// for (let j = 0; j < 9; j++) {
+				// 	var quaternion = new THREE.Quaternion(0, 0, 0, 1);
+				// 	createBox(new THREE.Vector3(-5, -1.35, j * 5), quaternion, 1, 3.9, 2, 0);
 
-					var quaternion = new THREE.Quaternion(0, 0, 0, 1);
-					createBox(new THREE.Vector3(-5, -1.35, -j * 5), quaternion, 1, 3.9, 2, 0);
-				}
+				// 	var quaternion = new THREE.Quaternion(0, 0, 0, 1);
+				// 	createBox(new THREE.Vector3(-5, -1.35, -j * 5), quaternion, 1, 3.9, 2, 0);
+				// }
 
 				// Grass
 				createBox(new THREE.Vector3(-5, -1.4, 115), ZERO_QUATERNION, 40, 4, 100, 0, 2, 0x2a7703);
@@ -687,9 +723,10 @@
 				//createBox(new THREE.Vector3(30, 20, 20), ZERO_QUATERNION, 15, 140, 15, 0, 2, 0x808080)
 
 
+				// Trotoir
 
-				// createBox(new THREE.Vector3(40, 0, 10), ZERO_QUATERNION, 72, 2, 72, 0, 2, 0x1D1D1D)
-				// createBox(new THREE.Vector3(0, 0, 165), ZERO_QUATERNION, 400, 2, 200, 0, 2, 0x1D1D1D)
+				createBox(new THREE.Vector3(48, 0, -123), ZERO_QUATERNION, 86, 2, 336, 0, 2, 0x1D1D1D)
+				createBox(new THREE.Vector3(-170, 0, -123), ZERO_QUATERNION, 310, 2, 336, 0, 2, 0x1D1D1D)
 
 				// Arbres
 				for (i = 0; i <= 4; i++) {
@@ -717,8 +754,6 @@
 
 				//Texte
 				createText();
-
-
 
 				// var size = .75;
 				// var nw = 8;
