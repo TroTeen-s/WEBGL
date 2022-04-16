@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 	<style>
 		body {
-			color: #61443e;
+			color: #ffffff;
 			font-family: Monospace;
 			font-size: 13px;
 			text-align: center;
@@ -35,13 +35,49 @@
 		a {
 			color: #a06851;
 		}
+
+		#blocker {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(29, 29, 29, 0.87);
+			}
+
+			#instructions {
+				width: 100%;
+				height: 100%;
+
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+
+				text-align: center;
+				font-size: 14px;
+				cursor: pointer;
+			}
 	</style>
 </head>
 
 <body>
-	<div id="container"><br /><br /><br /><br /><br />Loading...</div>
-	<div id="speedometer">0.0 km/h</div>
-	<div id="info">Ammo.js Raycast vehicle demo<br>Press W,A,S,D to move.</div>
+	<div id="canvas">
+
+        <div id="blocker">
+            <div id="instructions">
+
+                <p style="font-size:60px">
+                    CLICK TO PLAY
+                </p>
+                <p style="font-size:90">
+                    Bienvenu(e) dans un monde virtuel, louez une trottinette et vous serez libre ! <br />
+					<p style="font-size:90">
+						Crédit : ESGI - PSP <br />
+
+            </p>
+            </div>
+        </div>
+
+    </div>
 
 	<script src="./builds/ammo.js"></script>
 
@@ -49,8 +85,14 @@
 	<script src="/src/js/three/OrbitControls.js"></script>
 	<script src="/src/js/three/Detector.js"></script>
 	<script src="/src/js/three/stats.min.js"></script>
+	
 
-	<script>
+	<script type="module">
+
+		import { PointerLockControls } from 'https://cdn.skypack.dev/three@0.132.2/examples/jsm/controls/PointerLockControls.js';
+
+		let distanteCam;
+		var temp = new THREE.Vector3;
 
 
 		Ammo().then(function (Ammo) {
@@ -112,20 +154,50 @@
 
 			function initGraphics() {
 
-				container = document.getElementById('container');
+				container = document.getElementById('canvas');
 				speedometer = document.getElementById('speedometer');
 
 				scene = new THREE.Scene();
 
 				camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.2, 2000);
-				camera.position.x = -4.84;
-				camera.position.y = 4.39;
-				camera.position.z = -35.11;
-				camera.lookAt(new THREE.Vector3(0.33, -0.40, 0.85));
-				controls = new THREE.OrbitControls(camera);
+				camera.position.x = -2;
+				camera.position.y = 12;
+				camera.position.z = -90;
+				camera.lookAt(scene.position);
+
+				
+				controls = new PointerLockControls( camera, document.body );
+				const blocker = document.getElementById( 'blocker' );
+				const instructions = document.getElementById( 'instructions' );                                 
+
+				instructions.addEventListener( 'click', function () {         
+                    
+                    // Capture d'événement + LOCK Camera
+
+					controls.lock();
+
+				} );
+
+				controls.addEventListener( 'lock', function () {
+
+                    // Si l'événement lock est déclenché on retire CLICK FOR PLAY
+
+					instructions.style.display = 'none';
+					blocker.style.display = 'none';
+
+				} );
+
+				controls.addEventListener( 'unlock', function () {
+
+                    // Sinon on continue à l'afficher
+
+					blocker.style.display = 'block';
+					instructions.style.display = '';
+
+				} );
 
 				renderer = new THREE.WebGLRenderer({ antialias: true });
-				renderer.setClearColor(0xbfd1e5);
+				renderer.setClearColor(0xC9EAFF );
 				renderer.setPixelRatio(window.devicePixelRatio);
 				renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -140,14 +212,14 @@
 				materialStatic = new THREE.MeshPhongMaterial({ color: 0x999999 });
 				materialInteractive = new THREE.MeshPhongMaterial({ color: 0x990000 });
 
-				container.innerHTML = "";
+				// container.innerHTML = "";
 
 				container.appendChild(renderer.domElement);
 
-				stats = new Stats();
-				stats.domElement.style.position = 'absolute';
-				stats.domElement.style.top = '0px';
-				container.appendChild(stats.domElement);
+				// stats = new Stats();
+				// stats.domElement.style.position = 'absolute';
+				// stats.domElement.style.top = '0px';
+				// container.appendChild(stats.domElement);
 
 				window.addEventListener('resize', onWindowResize, false);
 				window.addEventListener('keydown', keydown);
@@ -180,7 +252,14 @@
 				for (var i = 0; i < syncList.length; i++)
 					syncList[i](dt);
 				physicsWorld.stepSimulation(dt, 10);
-				controls.update(dt);
+				
+
+				temp.setFromMatrixPosition(distanteCam.matrixWorld)
+				camera.position.lerp(temp, 0.9)
+				// camera.lookAt(temp)
+				// camera.position.Lerp(temp,0.9)
+				// camera.lookAt(camera.position.lerp(temp, 0.9));
+
 				renderer.render(scene, camera);
 				time += dt;
 				stats.update();
@@ -322,32 +401,32 @@
 
 				const loader = new THREE.FontLoader();
 
-				loader.load('./src/styles/Open Sans_Regular.json', function (font) {
-					const geometry = new THREE.TextGeometry('EASYSCOOTER', {
-						font: font,
-						size: 5,
-						height: 10,
-						curveSegments: 5,
-						bevelEnabled: true,
-						bevelThickness: 1,
-						bevelSize: 1,
-						bevelOffset: 1,
-						bevelSegments: 5
-					})
+				loader.load('./src/styles/gentilis_bold.typeface.json', function (font) {
+					var textGeometry = new THREE.TextGeometry( "EASYSCOOT", {
 
-					const textMesh = new THREE.Mesh(geometry, [
-						new THREE.MeshPhongMaterial({ color: 0xFFFFFF }),
-						// new THREE.MeshPhongMaterial( { color:0x5c2301})
-					])
+					font: font,
 
-					textMesh.castShadow = true;
-					textMesh.position.y = 30;
-					textMesh.position.x = 15;
-					textMesh.position.z = 125;
+					size: 18,
+					height: 2,
+					curveSegments: 2,
 
-					textMesh.rotation.y = 3.128;
+					bevelThickness: 1,
+					bevelSize: 1,
+					bevelEnabled: true
 
-					scene.add(textMesh)
+					});
+
+					var textMaterial = new THREE.MeshPhongMaterial( 
+					{ color: 0xffffff, specular: 0xffffff }
+					);
+
+					var mesh = new THREE.Mesh( textGeometry, textMaterial );
+					mesh.rotation.y = 3.15
+					mesh.position.y = 30;
+					mesh.position.z = 200;
+					mesh.position.x = 90;
+
+					scene.add( mesh );
 
 
 				})
@@ -435,6 +514,11 @@
 				MeshBar.position.z = 1.5
 				vehicule.add(MeshBar)
 
+				
+				distanteCam = new THREE.Object3D;
+				vehicule.add(distanteCam)
+				distanteCam.position.set(0,8,-20)
+
 				scene.add(vehicule);
 				return vehicule;
 			}
@@ -471,6 +555,7 @@
 				var steeringClamp = .5;
 				var maxEngineForce = 2000;
 				var maxBreakingForce = 100;
+
 
 			// Chassis
 			var geometry = new Ammo.btBoxShape(new Ammo.btVector3(chassisWidth * .5, chassisHeight * .5, chassisLength * .5));
@@ -535,7 +620,7 @@
 
 					var speed = vehicle.getCurrentSpeedKmHour();
 
-					speedometer.innerHTML = (speed < 0 ? '(R) ' : '') + Math.abs(speed).toFixed(1) + ' km/h';
+					// speedometer.innerHTML = (speed < 0 ? '(R) ' : '') + Math.abs(speed).toFixed(1) + ' km/h';
 
 					breakingForce = 0;
 					engineForce = 0;
@@ -612,9 +697,9 @@
 				// Floor (trottoir)
 				createBox(new THREE.Vector3(0, -0, 0), ZERO_QUATERNION, 800, 1, 800, 0, 2,  0x000000);
 
-				var quaternion = new THREE.Quaternion(0, 0, 0, 1);
-				quaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 18);
-				createBox(new THREE.Vector3(0, -1.5, 0), quaternion, 8, 4, 10, 0);
+				// var quaternion = new THREE.Quaternion(0, 0, 0, 1);
+				// quaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 18);
+				// createBox(new THREE.Vector3(0, -1.5, 0), quaternion, 8, 4, 10, 0);
 
 				// There is road
 				// createBox(new THREE.Vector3(0, 0, 55), ZERO_QUATERNION, 800, 1, 20, 0, 10, 0x000000);
@@ -685,9 +770,9 @@
 				// createBox(new THREE.Vector3(-55, 0, 75), ZERO_QUATERNION, 15, 70, 15, 0, 2, 0x1D1D1D)
 
 				// // Arche
-				createBox(new THREE.Vector3(25, 0, 200), ZERO_QUATERNION, 15, 100, 15, 0, 2, 0xFF9900)
-				createBox(new THREE.Vector3(-5, 44, 200), ZERO_QUATERNION, 60, 12, 15, 0, 2, 0xFF9900)
-				createBox(new THREE.Vector3(-35, 0, 200), ZERO_QUATERNION, 15, 100, 15, 0, 2, 0xFF9900)
+				// createBox(new THREE.Vector3(25, 0, 200), ZERO_QUATERNION, 15, 100, 15, 0, 2, 0xFF9900)
+				// createBox(new THREE.Vector3(-5, 44, 200), ZERO_QUATERNION, 60, 12, 15, 0, 2, 0xFF9900)
+				// createBox(new THREE.Vector3(-35, 0, 200), ZERO_QUATERNION, 15, 100, 15, 0, 2, 0xFF9900)
 
 
 				//Gros immeuble
@@ -821,7 +906,7 @@
 
 
 
-				createVehicle(new THREE.Vector3(0, 10, -10), ZERO_QUATERNION);
+				createVehicle(new THREE.Vector3(20, 10, -30), ZERO_QUATERNION);
 
 
 			}
